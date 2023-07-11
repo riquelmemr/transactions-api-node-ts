@@ -36,6 +36,22 @@ class User {
   get email(): string {
     return this._email;
   }
+
+  set name(name: string) {
+    this._name = name;
+  }
+
+  set age(age: number) {
+    this._age = age;
+  }
+
+  set cpf(cpf: string) {
+    this._cpf = cpf;
+  }
+
+  set email(email: string) {
+    this._email = email;
+  }
 }
 
 export default User;

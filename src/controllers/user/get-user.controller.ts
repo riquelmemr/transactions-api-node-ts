@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
+import { userRepository } from "../../repositories/user.repository";
 import { GetUserUseCase } from "../../usecases/user/get-user.usecase";
 
 class GetUserController {
   public execute(req: Request, res: Response) {
     const { id } = req.params;
 
-    const getUserUseCase = new GetUserUseCase();
+    const getUserUseCase = new GetUserUseCase(userRepository);
     const response = getUserUseCase.execute(id);
 
     if (!response.user) {

@@ -1,5 +1,6 @@
 import { users } from "../database";
 import User from "../entities/user.class";
+import { IUpdateUserRequestDTO } from "../usecases/user/update-user.usecase";
 import IUserRepository from "./user.interface";
 
 class UserRepository implements IUserRepository {
@@ -35,7 +36,28 @@ class UserRepository implements IUserRepository {
   public create(user: User) {
     users.push(user);
   }
+
+  public update(id: string, data: IUpdateUserRequestDTO) {
+    const indexUser = users.findIndex((user) => {
+      return user.id == id;
+    })
+
+    users[indexUser].name = data.name || users[indexUser].name;
+    users[indexUser].age = data.age || users[indexUser].age;
+    users[indexUser].cpf = data.cpf || users[indexUser].cpf;
+    users[indexUser].email = data.email || users[indexUser].email;
+  }
+
+  delete(id: string) {
+    const indexUser = users.findIndex((user) => {
+      return user.id == id;
+    })
+
+    users.splice(indexUser, 1);
+  }
 }
 
-export { UserRepository };
+const userRepository = new UserRepository();
+
+export { UserRepository, userRepository };
 

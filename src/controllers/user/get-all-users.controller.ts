@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { userRepository } from "../../repositories/user.repository";
 import { GetAllUsersUseCase, IGetAllUsersRequestDTO } from "../../usecases/user/get-all-users.usecase";
 
 class GetAllUsersController {
@@ -11,7 +12,7 @@ class GetAllUsersController {
       cpf: !cpf ? undefined : String(cpf),
     };
 
-    const getAllUsersUseCase = new GetAllUsersUseCase();
+    const getAllUsersUseCase = new GetAllUsersUseCase(userRepository);
     const response = getAllUsersUseCase.execute(payload);
 
     return res.status(200).json(response);

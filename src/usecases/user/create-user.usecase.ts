@@ -14,11 +14,10 @@ interface ICreateUserResponseDTO {
 }
 
 class CreateUserUseCase {
-  public execute(data: ICreateUserRequestDTO): ICreateUserResponseDTO {
-    // Chamar o repository
-    const userRepository = new UserRepository()
+  constructor(private userRepository: UserRepository) {}
 
-    const userFound = userRepository.getOne(data.cpf);
+  public execute(data: ICreateUserRequestDTO): ICreateUserResponseDTO {
+    const userFound = this.userRepository.getOne(data.cpf);
 
     if (userFound) {
       const response = {
@@ -29,7 +28,7 @@ class CreateUserUseCase {
     }
 
     const user = new User(data.name, data.age, data.cpf, data.email);
-    userRepository.create(user);
+    this.userRepository.create(user);
 
     const response: ICreateUserResponseDTO = {
       status: "Usuário criado com sucesso!",

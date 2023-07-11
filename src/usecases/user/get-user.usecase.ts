@@ -14,10 +14,11 @@ interface IGetUserResponseDTO {
 }
 
 class GetUserUseCase {
+  constructor(private userRepository: UserRepository) {}
+
   public execute(id: string): IGetUserResponseDTO {
-    const userRepository = new UserRepository();
     
-    const userFound = userRepository.getById(id);
+    const userFound = this.userRepository.getById(id);
 
     if (!userFound) {
       const response: IGetUserResponseDTO = {
