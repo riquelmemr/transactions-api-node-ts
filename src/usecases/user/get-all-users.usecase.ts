@@ -1,4 +1,5 @@
-import { UserRepository } from "../../repositories/user.repository";
+import User from "../../entities/user.entity";
+import { UserRepository } from "../../repositories/user/user.repository";
 import { UserResponse } from "./get-user.usecase";
 
 export interface IGetAllUsersRequestDTO {
@@ -74,9 +75,21 @@ class GetAllUsersUseCase {
 
     return {
       status: "Usuário(s) encontrado(s) com sucesso.",
-      users: usersFiltered
+      users: usersFiltered.map((user) => {
+        return {
+          id: user.id,
+          name: user.name,
+          age: user.age,
+          cpf: user.cpf,
+          email: user.email
+        }
+      })
     }
   }
+
+  returnWithoutTransactions(user: User[]) {
+    
+  } 
 }
 
 export { GetAllUsersUseCase };

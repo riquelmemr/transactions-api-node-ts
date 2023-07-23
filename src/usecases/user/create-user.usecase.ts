@@ -1,5 +1,5 @@
-import User from "../../entities/user.class";
-import { UserRepository } from "../../repositories/user.repository";
+import User from "../../entities/user.entity";
+import { UserRepository } from "../../repositories/user/user.repository";
 
 interface ICreateUserRequestDTO {
   name: string;
@@ -19,7 +19,7 @@ class CreateUserUseCase {
   public execute(data: ICreateUserRequestDTO): ICreateUserResponseDTO {
     const { name, email, age, cpf } = data;
 
-    const userFound = this.userRepository.getOne(cpf);
+    const userFound = this.userRepository.getOne('_cpf', cpf);
 
     if (userFound) {
       throw new Error("CPF já utilizado! Tente novamente.");

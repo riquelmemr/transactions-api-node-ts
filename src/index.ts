@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import { CreateUserController, DeleteUserController, GetAllUsersController, GetUserController, UpdateUserController } from './controllers/user';
 import { verifyCreateUser, verifyUpdateUser } from './middlewares';
-import { UserRepository } from './repositories/user.repository';
+import { UserRepository } from './repositories/user/user.repository';
 
 const app = express();
 

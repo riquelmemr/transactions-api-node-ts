@@ -1,4 +1,4 @@
-import { UserRepository } from "../../repositories/user.repository";
+import { UserRepository } from "../../repositories/user/user.repository";
 import { UserResponse } from "./get-user.usecase";
 
 interface IUpdateUserRequestDTO {
@@ -26,7 +26,12 @@ class UpdateUserUseCase {
       throw new Error("Usuário não encontrado pelo ID informado");
     }
 
-    this.userRepository.update(id, data);
+    this.userRepository.update(id, {
+      name: data.name || user.name,
+      age: data.age || user.age,
+      cpf: data.cpf || user.cpf,
+      email: data.email || user.email
+    });
 
     return {
       user: user,
