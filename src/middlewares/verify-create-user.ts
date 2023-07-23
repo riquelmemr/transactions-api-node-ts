@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 
-function verify(request: Request, response: Response, next: NextFunction) {
-  const { name, email, age, cpf } = request.body;
+function verifyCreateUser(req: Request, res: Response, next: NextFunction) {
+  const { name, email, age, cpf } = req.body;
 
   if (!name || !email || !age || !cpf) {
-    return response.status(400).json({
+    return res.status(400).json({
       status: "Dados inválidos. Preencha todos os campos!"
     });
   }
@@ -12,7 +12,7 @@ function verify(request: Request, response: Response, next: NextFunction) {
   const cleanCPF = cpf.replaceAll('.', '').replace('-', '');
 
   if (cleanCPF.length !== 11) {
-    return response.status(400).json({
+    return res.status(400).json({
       status: "CPF Inválido. Tente novamente!"
     })
   }
@@ -20,4 +20,5 @@ function verify(request: Request, response: Response, next: NextFunction) {
   next();
 }
 
-export default verify;
+export { verifyCreateUser };
+

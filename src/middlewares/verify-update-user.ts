@@ -1,30 +1,36 @@
 import { NextFunction, Request, Response } from "express";
-import { userRepository } from "../repositories/user.repository";
+import { userRepository } from "..";
 
 function verifyUpdateUser(req: Request, res: Response, next: NextFunction) {
   const { id } = req.params;
+  const { name, email, age, cpf } = req.body;
 
   const user = userRepository.getById(id);
 
   if (!user) {
     return res.status(400).json({
-      status: "Usuário não encontrado.",
+      status: "Usuário não encontrado pelo ID informado.",
     });
   }
 
-  const { name, age, cpf } = req.body;
-
-  if (!name || !age || !cpf) {
+  if (!name && !email && !age && !cpf) {
     return res.status(400).json({
-      status: "Dados inválidos. Preencha todos os campos!",
+      status: "Edite pelo menos algum dos campos: name, email, age ou cpf!",
     });
   }
 
-  const cleanCPF = cpf.replaceAll(".", "").replace("-", "");
+  if (cpf) {
+    const cleanCPF = cpf.replaceAll('.', '').replace('-', '');
 
-  if (cleanCPF.length !== 11) {
-    return res.status(400).json({
-      status: "CPF inválido. Tente novamente!",
-    });
+    if (cleanCPF.length !== 11) {
+      return res.status(400).json({
+        status: "CPF inválido. Tente novamente!",
+      });
+    }
   }
+
+  next();
 }
+
+export { verifyUpdateUser };
+

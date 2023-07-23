@@ -16,10 +16,11 @@ class GetAllUsersUseCase {
   constructor(private userRepository: UserRepository) {}
 
   public execute(data: IGetAllUsersRequestDTO): IGetAllUsersResponseDTO {
+    const { name, email, cpf } = data;
     let usersFiltered: UserResponse[];
 
-    if (data.name) {
-      usersFiltered = this.userRepository.getBy("_name", data.name).map((user) => {
+    if (name) {
+      usersFiltered = this.userRepository.getBy("_name", name).map((user) => {
         return {
           id: user.id,
           name: user.name,
@@ -35,8 +36,8 @@ class GetAllUsersUseCase {
       }
     }
 
-    if (data.email) {
-      usersFiltered = this.userRepository.getBy("_email", data.email).map((user) => {
+    if (email) {
+      usersFiltered = this.userRepository.getBy("_email", email).map((user) => {
         return {
           id: user.id,
           name: user.name,
@@ -52,8 +53,8 @@ class GetAllUsersUseCase {
       }
     }
 
-    if (data.cpf) {
-      usersFiltered = this.userRepository.getBy("_cpf", data.cpf).map((user) => {
+    if (cpf) {
+      usersFiltered = this.userRepository.getBy("_cpf", cpf).map((user) => {
         return {
           id: user.id,
           name: user.name,

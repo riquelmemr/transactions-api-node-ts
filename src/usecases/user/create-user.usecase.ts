@@ -17,17 +17,15 @@ class CreateUserUseCase {
   constructor(private userRepository: UserRepository) {}
 
   public execute(data: ICreateUserRequestDTO): ICreateUserResponseDTO {
-    const userFound = this.userRepository.getOne(data.cpf);
+    const { name, email, age, cpf } = data;
+
+    const userFound = this.userRepository.getOne(cpf);
 
     if (userFound) {
-      const response = {
-        status: "Usuário já cadastrado."
-      }
-
-      return response;
+      throw new Error("CPF já utilizado! Tente novamente.");
     }
 
-    const user = new User(data.name, data.age, data.cpf, data.email);
+    const user = new User(name, age, cpf, email);
     this.userRepository.create(user);
 
     const response: ICreateUserResponseDTO = {

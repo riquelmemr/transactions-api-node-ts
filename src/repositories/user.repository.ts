@@ -57,7 +57,7 @@ class UserRepository implements IUserRepository {
   }
 }
 
-const userRepository = new UserRepository();
 
-export { UserRepository, userRepository };
+
+export { UserRepository };
 

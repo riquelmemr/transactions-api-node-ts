@@ -10,22 +10,17 @@ export type UserResponse = {
 
 interface IGetUserResponseDTO {
   status: string;
-  user?: UserResponse;
+  user: UserResponse;
 }
 
 class GetUserUseCase {
   constructor(private userRepository: UserRepository) {}
 
   public execute(id: string): IGetUserResponseDTO {
-    
     const userFound = this.userRepository.getById(id);
 
     if (!userFound) {
-      const response: IGetUserResponseDTO = {
-        status: "Usuário não encontrado."
-      }
-
-      return response;
+      throw new Error("Usuário não encontrado pelo ID informado");
     }
 
     const response: IGetUserResponseDTO = {

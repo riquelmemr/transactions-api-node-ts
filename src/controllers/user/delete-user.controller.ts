@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { userRepository } from "../../repositories/user.repository";
+import { userRepository } from "../..";
 import { DeleteUserUseCase } from "../../usecases/user/delete-user.usecase";
 
 class DeleteUserController {

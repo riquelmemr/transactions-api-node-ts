@@ -1,24 +1,26 @@
 import { Request, Response } from 'express';
-import { userRepository } from '../../repositories/user.repository';
+import { userRepository } from '../..';
 import { CreateUserUseCase } from "../../usecases/user/create-user.usecase";
 
 class CreateUserController {
   public execute(req: Request, res: Response) {
-    const { name, cpf, email, age } = req.body;
+    try {
+      const { name, cpf, email, age } = req.body;
 
-    const createUserUseCase = new CreateUserUseCase(userRepository);
-    const response = createUserUseCase.execute({
-      name,
-      cpf,
-      email,
-      age
-    })
-
-    if (!response.user) {
-      return res.status(400).json(response);
+      const createUserUseCase = new CreateUserUseCase(userRepository);
+      const response = createUserUseCase.execute({
+        name,
+        cpf,
+        email,
+        age
+      })
+  
+      return res.status(201).json(response);
+    } catch (error: any) {
+      return res.status(400).json({
+        error: error.message
+      })
     }
-
-    return res.status(201).json(response);
   }
 }
 

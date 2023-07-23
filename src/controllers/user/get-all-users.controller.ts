@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { userRepository } from "../../repositories/user.repository";
+import { userRepository } from "../..";
 import { GetAllUsersUseCase, IGetAllUsersRequestDTO } from "../../usecases/user/get-all-users.usecase";
 
 class GetAllUsersController {
