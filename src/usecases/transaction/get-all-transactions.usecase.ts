@@ -1,10 +1,26 @@
+import Transaction, { TypeTransaction } from "../../entities/transaction.entity";
 import { UserRepository } from "../../repositories/user/user.repository";
+
+interface IGetAllTransactionsRequestParamsDTO {
+  title?: string;
+  type?: TypeTransaction;
+}
+
+interface IGetAllTransactionsResponseDTO {
+  status: string;
+  transactions: Transaction[];
+  balance: {
+    income: number;
+    outcome: number;
+    total: number;
+  }
+}
 
 class GetAllTransactionsUseCase {
   constructor(private userRepository: UserRepository) {}
 
-  execute(userId: string) {
-    const transactions = this.userRepository.getAllTransactions(userId);
+  execute(userId: string, data: IGetAllTransactionsRequestParamsDTO) {
+    const transactions = this.userRepository.getAllTransactions(userId, data);
 
     return {
       status: transactions.length > 0 ? "Transações encontradas com sucesso!" : "Nenhuma transação cadastrada ainda!",
@@ -18,5 +34,5 @@ class GetAllTransactionsUseCase {
   }
 }
 
-export { GetAllTransactionsUseCase };
+export { GetAllTransactionsUseCase, IGetAllTransactionsRequestParamsDTO, IGetAllTransactionsResponseDTO };
 

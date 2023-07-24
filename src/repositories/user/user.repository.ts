@@ -1,6 +1,7 @@
 import { users } from "../../database";
 import Transaction, { TypeTransaction } from "../../entities/transaction.entity";
 import User from "../../entities/user.entity";
+import { IGetAllTransactionsRequestParamsDTO } from "../../usecases/transaction/get-all-transactions.usecase";
 import { BaseRepository } from "../base.repository";
 
 class UserRepository extends BaseRepository<User>{
@@ -8,9 +9,21 @@ class UserRepository extends BaseRepository<User>{
     super(users);
   }
 
-  getAllTransactions(userId: string) {
+  getAllTransactions(userId: string, filter: IGetAllTransactionsRequestParamsDTO): Transaction[] {
+    const { title, type } = filter;
+    
     const index = this.repository.findIndex((user) => user.id === userId);
-    return this.repository[index].transactions;
+    let transactions = [...this.repository[index].transactions];
+
+    if (title) {
+      transactions = transactions.filter((t) => t.title.toLowerCase().includes(title.toLowerCase()));
+    }
+
+    if (type) {
+      transactions = transactions.filter((t) => t.type === type);
+    }
+
+    return transactions;
   }
 
   getTransaction(id: string, transactionId: string): Transaction | undefined {
