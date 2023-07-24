@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
+import { CreateTransactionController, DeleteTransactionController, GetAllTransactionsController, GetTransactionController, UpdateTransactionController } from './controllers/transaction';
 import { CreateUserController, DeleteUserController, GetAllUsersController, GetUserController, UpdateUserController } from './controllers/user';
-import { verifyCreateUser, verifyUpdateUser } from './middlewares';
+import { verifyCreateTransaction, verifyCreateUser, verifyUpdateTransaction, verifyUpdateUser, verifyUserAlreadyExists } from './middlewares';
 import { UserRepository } from './repositories/user/user.repository';
 
 const app = express();
@@ -11,7 +12,9 @@ app.use(express.urlencoded({ extended: false }));
 app.listen(8080, () => console.log('Servidor iniciado'));
 
 app.get('/', (request: Request, response: Response) => {
-  return response.send('OK');
+  return response.json({
+    message: 'Hello World!'
+  });
 });
 
 export const userRepository = new UserRepository();
@@ -30,3 +33,18 @@ app.put('/users/:id', verifyUpdateUser, updateUserController.execute);
 
 const deleteUserController = new DeleteUserController();
 app.delete('/users/:id', deleteUserController.execute);
+
+const createTransactionController = new CreateTransactionController();
+app.post('/user/:userId/transaction', verifyCreateTransaction, verifyUserAlreadyExists, createTransactionController.execute);
+
+const getAllTransactionsController = new GetAllTransactionsController();
+app.get('/user/:userId/transaction', verifyUserAlreadyExists, getAllTransactionsController.execute);
+
+const getTransactionController = new GetTransactionController();
+app.get('/user/:userId/transaction/:id', verifyUserAlreadyExists, getTransactionController.execute);
+
+const deleteTransactionController = new DeleteTransactionController();
+app.delete('/user/:userId/transaction/:id', verifyUserAlreadyExists, deleteTransactionController.execute);
+
+const updateTransactionController = new UpdateTransactionController();
+app.put('/user/:userId/transaction/:id', verifyUserAlreadyExists, verifyUpdateTransaction, updateTransactionController.execute);

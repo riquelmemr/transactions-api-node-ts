@@ -1,4 +1,2 @@
-import User from "../entities/user.entity";
+export { users } from './users.database';
 
-// Onde vamos armazenar os usuários criados na rota /users
-export const users: User[] = [];
